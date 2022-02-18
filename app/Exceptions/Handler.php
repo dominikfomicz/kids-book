@@ -3,10 +3,26 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+	/**
+	 * @param Request $request
+	 * @param Throwable $e
+	 * @return Response|JsonResponse|\Symfony\Component\HttpFoundation\Response
+	 */
+	public function render($request, Throwable $e): Response|JsonResponse|\Symfony\Component\HttpFoundation\Response
+	{
+		return response()->json([
+			'type' => get_class($e),
+			'message' => $e->getMessage(),
+		]);
+	}
+
     /**
      * A list of the exception types that are not reported.
      *
